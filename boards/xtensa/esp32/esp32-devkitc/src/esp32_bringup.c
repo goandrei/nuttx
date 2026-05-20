@@ -50,6 +50,10 @@
 #  include <nuttx/leds/userled.h>
 #endif
 
+#ifdef CONFIG_RGBLED
+#  include "esp32_rgbled.h"
+#endif
+
 #ifdef CONFIG_CAN_MCP2515
 #  include "esp32_mcp2515.h"
 #endif
@@ -121,6 +125,10 @@
 
 #ifdef CONFIG_SENSORS_MS56XX
 #  include "esp32_ms5611.h"
+#endif
+
+#ifdef CONFIG_SENSORS_BME680
+#  include "esp32_bme680.h"
 #endif
 
 #ifdef CONFIG_LCD_HT16K33
@@ -308,6 +316,14 @@ int esp32_bringup(void)
       syslog(LOG_ERR, "ERROR: esp32_pwm_setup() failed: %d\n", ret);
     }
 #endif /* CONFIG_ESP32_LEDC */
+
+#ifdef CONFIG_RGBLED
+  ret = esp32_rgbled_initialize("/dev/rgbled0");
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: esp32_rgbled_initialize() failed: %d\n", ret);
+    }
+#endif
 
 #ifdef CONFIG_ESP_MCPWM_CAPTURE
   ret = board_capture_initialize();
@@ -770,6 +786,17 @@ int esp32_bringup(void)
     {
       syslog(LOG_ERR, "ERROR: board_apds9960_initialize() failed: %d\n",
              ret);
+    }
+#endif
+
+#ifdef CONFIG_SENSORS_BME680
+  /* Try to register BME680 device in I2C0 */
+
+  ret = board_bme680_initialize(0, 0);
+
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "Failed to initialize BME680 driver: %d\n", ret);
     }
 #endif
 

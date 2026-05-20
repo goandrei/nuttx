@@ -33,7 +33,7 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
-#define RGB_LED_TIMER TIMER0
+#define RGB_LED_TIMER 0
 
 #define RGB_R_CHANN 0
 #define RGB_G_CHANN 1

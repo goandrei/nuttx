@@ -42,7 +42,6 @@
 #include <nuttx/timers/pwm.h>
 #include <nuttx/leds/rgbled.h>
 
-#include "esp32-sparrow-kit.h"
 #include "esp32_gpio.h"
 #include "esp32_ledc.h"
 #include "esp32_rgbled.h"
